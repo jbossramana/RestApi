@@ -1,0 +1,7 @@
+Test url:
+
+http://localhost:8081/client/city/1
+
+🕒 First call: client → server (2 sec delay).
+
+⚡ Second call (within cache time): client returns from cache, no server hit.

@@ -1,0 +1,90 @@
+
+There are four common strategies for REST API versioning, each with specific real-world use cases 
+where they shine:
+
+1. URI Versioning (Path Versioning)
+
+Description: Includes the version number directly in the API's Uniform Resource Identifier (URI) path 
+(e.g., /api/**v1**/users).
+
+Real-world Usecases:
+
+Public-facing APIs (Web/Mobile Apps): This is the most common and often preferred method for 
+APIs consumed by third parties or client applications like mobile apps.
+
+Why: It's simple, discoverable, and easily handled by tools like API gateways and load balancers 
+for routing. Clients can clearly see and hardcode which version they are calling.
+
+Major Breaking Changes: Used when a change is so fundamental (e.g., complete endpoint restructure, 
+major data model change) that older clients must be aware they are calling a different API.
+
+Example: Moving from a monolithic user data model (/v1/users) to a segmented one (/v2/user-profiles 
+and /v2/user-settings).
+
+
+2. Request Parameter Versioning (Query String Versioning)
+
+Description: Appends the version number as a query parameter to the URI (e.g., /api/users?**version=1**).
+
+Real-world Usecases:
+
+Minor Non-Breaking Changes/Defaulting: Useful for introducing minor, additive, or behavioral changes
+that don't fundamentally break existing clients.
+
+Why: If the parameter is omitted, the API can default to the latest stable version, allowing older clients 
+to continue working without modification. New clients can opt into the new features.
+
+Testing and Internal APIs: Sometimes used internally for quick, easy testing of new features or versions 
+without changing the core URI structure.
+
+Example: Adding an optional new field to a response, where a client can request ?version=2 to see the 
+new field, but existing clients requesting ?version=1 or no version get the old response format.
+
+3. (Custom) Headers Versioning
+
+Description: Passes the version number in a custom request header (e.g., X-API-Version: 1).
+
+Real-world Usecases:
+
+Client Flexibility & Clean URIs: Preferred when you want to keep the URI clean and stable across 
+versions, as the versioning metadata is moved to the header.
+
+Why: Useful in environments where the URI path is critical for internal routing or monitoring, 
+and you don't want the version number cluttering it.
+
+Internal Service-to-Service Communication (Microservices): Commonly used for internal services 
+where the contract is well-known.
+
+Example: A payment processing service calls an internal authentication service. The payment service 
+can specify the version of the authentication API it expects via a header, keeping the authentication 
+endpoint URI stable.
+
+
+4. Media Type Versioning ("Content Negotiation" or "Accept Header")
+
+Description: Includes the version number within the Accept header's media type 
+(e.g., Accept: application/vnd.company.app.v2+json).
+
+Real-world Usecases:
+
+Hypermedia APIs (HATEOAS): The most RESTful approach, closely aligning with standard HTTP
+ content negotiation principles.
+
+Why: It treats different versions as different representations of the same resource, which is 
+ideal for hypermedia where the resource is the URI.
+
+High-Volume/External APIs Requiring Strict Protocol: Used by major tech companies (like GitHub or Stripe)
+ for robust, long-term API strategies where the format of the response is a core part of the API contract.
+
+Example: A GET /users/123 request could return:
+
+Version 1 data with Accept: application/vnd.github.v3+json (as GitHub does).
+
+Version 2 data with Accept: application/vnd.github.v4+json.
+
+The resource itself (/users/123) remains consistent, and the client specifies the exact representation 
+it is able to process.
+
+
+
+

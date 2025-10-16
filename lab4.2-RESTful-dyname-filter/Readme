@@ -1,0 +1,90 @@
+http://localhost:8080/filterBean?dynamic=message3
+
+
+Dynamic filtering with Jackson is very powerful in real-world REST APIs, especially when your 
+response structure changes depending on the context (e.g., user type, UI page, performance 
+optimization, or security).
+
+Here are some real-time use cases where @JsonFilter + MappingJacksonValue dynamic filtering is 
+commonly used in production systems 
+
+1. Role-based Data Exposure (Security Use Case)
+
+A hospital management system returns patient details.
+
+Admins should see everything (including medical history, insurance).
+
+Doctors should see medical details but not insurance.
+
+Patients should see only basic details.
+
+✅ Why dynamic filter helps:
+Instead of creating multiple DTO classes or responses, you can use one model and filter
+fields dynamically based on the role.
+
+@GetMapping("/patient/{id}")
+public MappingJacksonValue getPatient(@PathVariable Long id, @RequestParam String role) {
+    Patient patient = service.getPatient(id);
+
+    SimpleBeanPropertyFilter filter;
+    if (role.equals("ADMIN")) {
+        filter = SimpleBeanPropertyFilter.serializeAll();
+    } else if (role.equals("DOCTOR")) {
+        filter = SimpleBeanPropertyFilter.filterOutAllExcept("name", "age", "diagnosis");
+    } else {
+        filter = SimpleBeanPropertyFilter.filterOutAllExcept("name", "age");
+    }
+
+    FilterProvider filters = new SimpleFilterProvider().addFilter("PatientFilter", filter);
+    MappingJacksonValue mapping = new MappingJacksonValue(patient);
+    mapping.setFilters(filters);
+    return mapping;
+}
+
+2. Different Views for Mobile vs Web (Performance Optimization)
+
+Mobile apps often need a lighter payload.
+
+Web apps need detailed data for dashboards.
+
+✅ Example: An Order object with 15 fields. Mobile just needs 5, web needs all 15.
+
+
+@GetMapping("/orders")
+public MappingJacksonValue getOrders(@RequestParam String client) {
+    List<Order> orders = service.getAllOrders();
+    SimpleBeanPropertyFilter filter;
+
+    if (client.equals("mobile")) {
+        filter = SimpleBeanPropertyFilter.filterOutAllExcept("id", "status", "amount");
+    } else {
+        filter = SimpleBeanPropertyFilter.serializeAll();
+    }
+
+    FilterProvider filters = new SimpleFilterProvider().addFilter("OrderFilter", filter);
+    MappingJacksonValue mapping = new MappingJacksonValue(orders);
+    mapping.setFilters(filters);
+    return mapping;
+}
+
+
+3. Masking or Hiding Sensitive Data Dynamically
+
+Sometimes the same API is used for internal teams and external partners.
+
+Internal teams can see sensitive fields (PAN, SSN, Salary).
+
+External partners must not.
+
+✅ Dynamic filters let you hide sensitive fields dynamically depending on partnerType or apiKey.
+
+
+
+
+
+
+
+
+
+
+

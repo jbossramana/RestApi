@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Code on Demand Client</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #data { margin-top: 10px; padding: 10px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Code on Demand Example (Spring Boot Client)</h1>
+
+    <h3>1. JSON Message from Server:</h3>
+    <div id="data">Loading...</div>
+
+    <h3>2. Widget Loaded from Server:</h3>
+    <p>The widget will appear below dynamically 👇</p>
+
+    <script>
+        const serverUrl = 'http://localhost:8080';
+
+        // Fetch and display normal data
+        fetch(`${serverUrl}/api/message`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('data').innerText = data.message;
+            });
+
+        // Fetch and execute code on demand
+        fetch(`${serverUrl}/api/widget`)
+            .then(res => res.text())
+            .then(code => {
+                eval(code); // execute JavaScript returned by server
+            });
+    </script>
+</body>
+</html>

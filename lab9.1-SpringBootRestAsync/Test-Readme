@@ -1,0 +1,44 @@
+JUnit 5 Architecture
+============
+
+JUnit 5 is composed of three distinct modules:
+
+1. JUnit Platform 
+
+The foundation for launching testing frameworks on the JVM.
+
+It defines the TestEngine API for discovering and running tests.
+
+2. JUnit Jupiter (The Programming Model) 
+This is where the code for writing tests lives.
+
+It provides all the annotations you use in your test class, such as:
+
+@Test
+
+@BeforeEach, @AfterEach
+
+@ParameterizedTest
+
+When you write: import org.junit.jupiter.api.Test; you are importing features from the JUnit Jupiter API.
+
+3. JUnit Vintage (The Compatibility Layer) 
+
+A bridge that allows older JUnit 3 and JUnit 4 tests to be run on the JUnit 5 Platform.
+
+
+
+@SpringBootTest: 
+============
+
+We use this annotation to load the full application context, ensuring all components 
+(Controllers, Services, Configuration, and the @Async execution mechanism) are 
+initialized and wired together as they would be in production.
+
+@AutoConfigureMockMvc: This injects the MockMvc object, which allows us to simulate 
+HTTP requests (POST, GET) without needing a running server instance or an open port. 
+This makes tests fast and isolated.
+
+JUnit 5 (@Test): The modern standard for defining test methods.
+
+

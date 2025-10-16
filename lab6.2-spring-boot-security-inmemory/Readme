@@ -1,0 +1,57 @@
+test1
+===
+
+Username	-> user
+Password -> password
+Authorities	
+ROLE_USER, REPORT_VIEW	
+
+Access Allowed
+/reports/view ✅, /admin/** ❌, /manage/** ❌
+
+test2
+===
+
+Username	-> admin
+Password -> password
+Authorities	
+ROLE_USER, REPORT_VIEW, ROLE_ADMIN
+
+Access Allowed : Everything
+
+
+Roles
+===
+
+Higher-level, broad classification of users (e.g., ADMIN, USER).
+
+Spring automatically prefixes them with "ROLE_".
+
+.hasRole("ADMIN") → checks for "ROLE_ADMIN".
+
+Used for coarse-grained access control (big categories).
+
+Example : .requestMatchers("/admin/**").hasRole("ADMIN");
+
+Authorities
+=======
+
+Fine-grained permissions (e.g., REPORT_VIEW, MANAGE_USERS).
+
+No prefix is added — you write them exactly as stored.
+
+Used for detailed access control (specific actions).
+
+Example:
+.requestMatchers("/reports/**").hasAuthority("REPORT_VIEW");
+
+Note:
+
+Use roles for groups of users (Admin, User, Manager).
+
+Use authorities for actions within roles (View Reports, Manage Users).
+
+Roles can be thought of as collections of authorities.
+
+
+

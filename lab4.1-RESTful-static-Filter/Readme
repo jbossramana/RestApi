@@ -1,0 +1,50 @@
+We can filter out sensitive data like password or card number in the response.
+Support backward compatibility, by removing newly added properties.
+
+
+There are two types for flitering:
+Static Filtering
+Dynamic Filtering:
+
+
+
+"User”  contains fields like: id, email, fullName, password, secretKey
+
+When the recipient has an “admin” role, we should return the full object with the fields: id, email, fullName, password, secretKey.
+
+When a recipient has a “user” role, we should return an object partially with the fields: email, fullName.
+
+
+@JsonInclude(JsonInclude.Include.NON_NULL) → skips null values.
+
+@JsonProperty("second_message") → renames message2 in the output.
+
+@JsonIgnore → hides message3 from the output.
+
+@JsonPropertyOrder → controls the order in the JSON.
+
+
+1. Hiding Sensitive Information (Security) — @JsonIgnore
+
+When sending a response to a client, you should never expose internal or sensitive fields
+ like passwords, tokens, or IDs used only in the backend.
+ 
+ 
+ 2. Skipping Empty or Null Values — @JsonInclude
+
+You may not want to send unnecessary null or empty fields to reduce payload size and 
+make the API response cleaner.
+
+3. Renaming Fields for External Clients — @JsonProperty
+
+Your database or internal naming may differ from what the client/frontend expects.
+Instead of changing backend field names, just rename them in the response.
+
+4. Controlling Field Order — @JsonPropertyOrder
+
+In some integrations, the order of fields matters (e.g., exporting to legacy systems, 
+Excel, or fixed-format JSON).
+
+
+
+

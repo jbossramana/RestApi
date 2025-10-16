@@ -1,0 +1,24 @@
+Example 1: Valid Customer Request
+=================================
+
+POST → /customer
+
+{
+  "name": "Ramesh",
+  "location": "Delhi",
+  "email": "ramesh@example.com",
+  "phoneNumber": "9876543210"
+}
+
+
+Example 2: Invalid Request (fails multiple validations)
+=======================================================
+
+{
+  "name": "Ra",
+  "location": "D",
+  "email": "ramesh@@example",
+  "phoneNumber": "1234"
+}
+
+

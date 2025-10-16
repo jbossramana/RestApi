@@ -1,0 +1,38 @@
+
+uid: bob userPassword: bobspassword
+
+
+1. DC = Domain Component (LDAP & Domain Names)
+
+This is the meaning used in the configuration string: ldap://localhost:8389/dc=springframework,dc=org
+
+In LDAP (Lightweight Directory Access Protocol) and Distinguished Names (DNs), dc stands for 
+Domain Component.
+
+Purpose: It is used to construct the hierarchical path (the DN) that corresponds to an Internet 
+Domain Name.
+
+Example:
+
+The domain name springframework.org is split into two components: springframework and org.
+
+This translates in LDAP to the base DN: dc=springframework,dc=org.
+
+This base DN represents the root of the directory tree for that domain.
+
+
+
+.userDnPatterns("uid={0},ou=people")	
+
+This specifies the pattern used to locate a user's 
+Distinguished Name (DN).	When a user attempts to log in with a username (e.g., "bob"), 
+Spring replaces {0} with "bob" and attempts to bind (authenticate) directly as that full 
+DN: uid=bob,ou=people,dc=springframework,dc=org.
+
+.groupSearchBase("ou=groups")	
+
+Defines the base DN from which Spring will search for the 
+user's group memberships. This is an optional feature. Spring will search within the
+ ou=groups,dc=springframework,dc=org context to determine which groups the authenticated 
+ user belongs to for authorization (e.g., roles).
+ 

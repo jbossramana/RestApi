@@ -1,0 +1,11 @@
+To call Restful webservice:
+
+Spring-mvc:
+1. RestTemplate [sync]
+2. RestClient [sync/async]
+
+Spring-webflux [Reactive programming]
+3. WebClient [sync/async/stream]
+
+java [17]
+4. HttpClient [sync/async]

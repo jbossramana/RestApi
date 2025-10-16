@@ -1,0 +1,8 @@
+Why this is Code on Demand:
+==========================
+
+The client app doesn’t contain widget code.
+
+It downloads executable JavaScript from the server.
+
+Client executes it dynamically with eval() → extending functionality at runtime.

@@ -1,0 +1,47 @@
+1. Get All Users
+
+GET http://localhost:8081/client/user
+
+2. Get User by ID
+
+GET http://localhost:8081/client/user/{id}
+
+3. Create New User
+
+POST http://localhost:8081/client/user
+
+Request:
+
+  {
+        "name": "surya",
+        "age": 50,
+        "salary": 40000.0
+    }
+    
+
+
+4. Update Existing User
+
+PUT http://localhost:8081/client/user/{id}
+
+Request:
+
+{
+        "id": 5,
+        "name": "surya",
+        "age": 50,
+        "salary": 50000.0
+    }
+    
+
+5. Delete User by ID
+
+DELETE http://localhost:8081/client/user/{id}
+
+6. Delete All Users
+
+DELETE http://localhost:8080/user
+
+7. Get Users with Pagination and Filter
+
+GET http://localhost:8081/client/user/page?pageNo=0&pageSize=5&sortBy=name&minSalary=30000
